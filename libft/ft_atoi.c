@@ -1,10 +1,10 @@
 int		ft_atoi(const char *str)
 {
 	int result;
-	int negatif;
+	int negative;
 
 	result = 0;
-	negatif = 0;
+	negative = 0;
 	if (str)
 	{
 		while (*str == ' ' || *str == '\t' || *str == '\n' || *str == '\r'
@@ -12,7 +12,7 @@ int		ft_atoi(const char *str)
 			str++;
 		if (*str == '-')
 		{
-			negatif = 1;
+			negative = 1;
 			str++;
 		}
 		else if (*str == '+')
@@ -24,5 +24,5 @@ int		ft_atoi(const char *str)
 				result *= 10;
 		}
 	}
-	return (negatif ? -result : result);
+	return (negative ? -result : result);
 }
