@@ -3,6 +3,7 @@
 
 #include <string.h>
 #include <unistd.h>
+#include <stdlib.h>
 
 int		ft_atoi(const char *str);
 
@@ -48,7 +49,7 @@ char	*ft_strdup(const char *src);
 
 int		ft_tolower(int c);
 
-char	*ft_strstr(char *str, char *to_find)
+char	*ft_strstr(char *str, char *to_find);
 
 char	*ft_strrchr(char *cp, int ch);
 
@@ -60,7 +61,7 @@ int		ft_strncmp(const char *s1, const char *s2, size_t n);
 
 char	*ft_strncat(char *s1, char *s2, size_t n);
 
-size_t   ft_strlen(char *str);
+size_t   ft_strlen(const char *str);
 
 size_t		ft_strlcat(char *dst, char *src, size_t siz);
 
