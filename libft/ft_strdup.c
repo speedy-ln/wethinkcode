@@ -2,12 +2,14 @@
 
 char	*ft_strdup(const char *src)
 {
-	int	i;
-	int	src_size;
+	size_t	i;
+	size_t	src_size;
+	size_t	size_dest
 	char	*dest;
 
-	int i = 0;
-	int size_dest = 0;
+	i = 0;
+	src_size = 0;
+	size_dest = 0;
 	while (src[src_size])
 		src_size++;
 	dest = (char*)malloc(sizeof(*dest) * (src_size));
