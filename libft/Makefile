@@ -17,7 +17,7 @@ CFLAGS = -Wall -Wextra -Werror
 all: $(NAME)
 
 $(NAME):
-  gcc -c $(CFLAGS) $(SRC)
+	gcc -c $(CFLAGS) $(SRC)
 	ar rc $(NAME) $(SRCO)
 	ranlib $(NAME)
 clean:
