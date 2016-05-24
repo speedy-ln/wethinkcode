@@ -1,30 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strnstr.c                                       :+:      :+:    :+:   */
+/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lnkadime <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/05/24 12:26:45 by lnkadime          #+#    #+#             */
-/*   Updated: 2016/05/24 12:27:10 by lnkadime         ###   ########.fr       */
+/*   Created: 2016/05/15 17:13:21 by lnkadime          #+#    #+#             */
+/*   Updated: 2016/05/15 17:22:44 by lnkadime         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <string.h>
 #include "libft.h"
 
-char	*ft_strnstr(const char *s1, const char *s2, size_t n)
+void	ft_putstr_fd(char const *s, int fd)
 {
-	if (*s2 == '\0')
-		return ((char*)s1);
-	if (!n)
-		return (NULL);
-	while (*s1 != '\0' && n >= ft_strlen(s2))
-	{
-		if (ft_strncmp(s1, s2, ft_strlen(s2)) == 0)
-			return ((char *)s1);
-		s1++;
-		n--;
-	}
-	return (0);
+	int		i;
+
+	i = -1;
+	while (s[++i])
+		ft_putchar_fd(s[i], fd);
 }
