@@ -11,12 +11,10 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-//#include "libft.h"
+#include "libft.h"
 #include <string.h>
 #include <stdio.h>
 #include <fcntl.h>
-
-size_t	ft_strlen(char *str);
 
 char		*ft_realloc(char *str, int i)
 {
@@ -24,82 +22,68 @@ char		*ft_realloc(char *str, int i)
 	int	j;
 
 	j = 0;
-	temp = (char*)malloc((sizeof(char*) * ft_strlen(str)) + i + 1);
+	temp = (char*)malloc(sizeof(str) + i + 1);
 	while (j != i)
 	{
 		temp[j] = str[j];
 		j++;
 	}
-//	printf("size of temp: %zi, size of str: %zi\n",sizeof(temp), sizeof(str));
-//	free(str);
+	free(str);
 	return (temp);
 }
 
-size_t	ft_strlen(char *str)
-{
-	size_t	i;
-
-	i = 0;
-	while (str[i])
-		i++;
-	return (i);
-}
-
-char	*ft_del_pre_str(char *str, ssize_t i)
+char	*ft_del_pre_str(char *str, int i)
 {
 	char	*temp;
-	ssize_t	j;
+	int	j;
 
 	j = 0;
-	i++;
-	temp = (char*)malloc(sizeof(char*) * ft_strlen(str));
-	while (str[i])
+	temp = (char*)malloc(sizeof(str) - i);
+	while (str[i - 1])
 	{
-		temp[j] = str[i];
+		temp[j] = str[i - 1];
 		i++;
 		j++;
 	}
-//	free(str);
+	free(str);
 	return (temp);
 }
 
 int		get_next_line(const int fd, char **line)
 {
-	static	char	**unread;
+	static	char	*unread;
 	static	int	file_read;
+	ssize_t		ret;
 	char		*str;
-	size_t		i;
-	size_t		ret;
-	int		k;
+	ssize_t		i;
 
 	*line = NULL;
 	i = 0;
-	k = 0;
 	str = (char *)malloc(sizeof(char*) * BUFF_SIZE);
-	unread = (char **)malloc(sizeof(char*) * BUFF_SIZE);
-	if (file_read == 0)
+	unread = (char *)malloc(sizeof(str));
+	while ((ret = read(fd, str, BUFF_SIZE)) && file_read != 0)
 	{
-		printf("reading file...\n");
-		while ((ret = read(fd, str, BUFF_SIZE)))
-		{
-			k++;
-			*unread = ft_realloc(str, BUFF_SIZE);
-		}
-		printf("\n k is: %i", k);
-		printf("unread: %s\n\n", *unread);
-		file_read = 1;
+		unread = ft_realloc(str, BUFF_SIZE);
+		if(ret == 0)
+			file_read = 1;
 	}
-//	free(str);
-	*line = (char*)malloc(sizeof(**unread) + 1);
-	while (unread[0][i] != '\n')
+	while (unread[i] != '\n')
 	{
-		line[0][i] = unread[0][i];
+		*line[i] = unread[i];
 		i++;
 	}
-	*unread = ft_del_pre_str(*unread, i);
-	printf("unread is now: \n %s", *unread);
-	line[0][i] = '\n';
-//	*line[i + 1] = '\0';
-	printf("%s \n", *line);
-	return (-1);
+	return (1);
+}
+
+int		main()
+{
+	int			fd;
+	char		**str;
+
+	str = (char**)malloc(sizeof(char) * BUFF_SIZE);
+	fd = open("text.txt", O_RDONLY);
+	get_next_line(fd, str);
+	close(fd);
+	printf("%s\n", *str);
+	return (0);
 }
