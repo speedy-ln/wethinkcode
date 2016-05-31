@@ -11,12 +11,11 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-//#include "libft.h"
+#include "libft.h"
 #include <string.h>
 #include <stdio.h>
 #include <fcntl.h>
-
-size_t	ft_strlen(char *str);
+#include <stdlib.h>
 
 char		*ft_realloc(char *str, int i)
 {
@@ -24,25 +23,12 @@ char		*ft_realloc(char *str, int i)
 	int	j;
 
 	j = 0;
-	temp = (char*)malloc((sizeof(char*) * ft_strlen(str)) + i + 1);
-	while (j != i)
-	{
-		temp[j] = str[j];
-		j++;
-	}
+	temp = (char*)malloc(sizeof(char*) * i);
+	ft_memcpy(temp, str, ft_strlen(str));
+//	ft_memdel((void)&str);
 //	printf("size of temp: %zi, size of str: %zi\n",sizeof(temp), sizeof(str));
 //	free(str);
 	return (temp);
-}
-
-size_t	ft_strlen(char *str)
-{
-	size_t	i;
-
-	i = 0;
-	while (str[i])
-		i++;
-	return (i);
 }
 
 char	*ft_del_pre_str(char *str, ssize_t i)
@@ -83,7 +69,7 @@ int		get_next_line(const int fd, char **line)
 		while ((ret = read(fd, str, BUFF_SIZE)))
 		{
 			k++;
-			*unread = ft_realloc(str, BUFF_SIZE);
+			*unread = realloc(str, ft_strlen(str) + BUFF_SIZE);
 		}
 		printf("\n k is: %i", k);
 		printf("unread: %s\n\n", *unread);

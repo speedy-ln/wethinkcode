@@ -8,8 +8,9 @@ int		main()
 
 	str = (char**)malloc(sizeof(char**) * BUFF_SIZE);
 	fd = open("text.txt", O_RDONLY);
-	get_next_line(fd, str);
-		printf("\n\n------- finished --------\n\n");
+	while (get_next_line(fd, str) == 1)
+		printf("%s\n", *str);
+	printf("\n\n------- finished --------\n\n");
 	close(fd);
 	return (0);
 }

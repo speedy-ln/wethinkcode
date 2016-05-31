@@ -12,7 +12,7 @@ SRC = ft_memset.c	ft_bzero.c		ft_memcpy.c		ft_memalloc.c \
 	  ft_strdel.c	ft_strequ.c		ft_striter.c	ft_striteri.c \
 	  ft_strjoin.c	ft_strmap.c		ft_strmapi.c	ft_strncat.c \
 	  ft_strncmp.c	ft_strnequ.c	ft_strnew.c		ft_strrchr.c \
-	  ft_strsub.c	ft_strtrim.c
+	  ft_strsub.c	ft_strtrim.c	ft_abs.c
 
 SRCO = $(SRC:.c=.o)
 
