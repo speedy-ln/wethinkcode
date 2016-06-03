@@ -16,7 +16,7 @@ typedef struct		s_c
 int		ft_atoi(const char *str);
 int		ft_abs(int n);
 void	ft_bzero(void *s, size_t n);
-
+int		ft_num_whitespaces(int *i, const char *format);
 int		ft_isalnum(int c);
 
 int		ft_isalpha(int c);

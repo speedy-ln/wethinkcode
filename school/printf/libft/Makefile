@@ -13,8 +13,8 @@ SRC = ft_memset.c	ft_bzero.c		ft_memcpy.c		ft_memalloc.c \
 	  ft_strjoin.c	ft_strmap.c		ft_strmapi.c	ft_strncat.c \
 	  ft_strncmp.c	ft_strnequ.c	ft_strnew.c		ft_strrchr.c \
 	  ft_strsub.c	ft_strtrim.c	ft_abs.c		ft_putnbr_base.c \
-	  ft_put_pf.c	ft_put_pf2.c	ft_printf.c	ft_putwstr.c	ft_wcslen.c \
-	  ft_putwstr_pf.c
+	  ft_put_pf.c	ft_put_pf2.c	ft_printf.c		ft_putwstr.c \
+	  ft_wcslen.c	ft_putwstr_pf.c	ft_printf_lib.c
 
 SRCO = $(SRC:.c=.o)
 

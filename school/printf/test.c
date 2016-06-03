@@ -20,7 +20,7 @@ void	ft_putwchar(const wchar_t *ws)
 
 int main()
 {
-	wchar_t	*str = L"abc";
+//	wchar_t	*str = L"abc";
 //	size_t	i = ft_wcslen(str);
 //	size_t a = 0;
 //	while (a != i)
@@ -33,9 +33,9 @@ int main()
 //	printf("size char: %zu\n", sizeof(char *));
 //	printf("%zu\n", i);
 //	printf("%S \n", str);
-	ft_printf("%S \n", str);
+//	ft_printf("%S \n", str);
 //	ft_putwchar(str);
 //	printf("%S \n", str);
-//	printf("\n");
+	ft_printf("% ic\n", 3);
 	return (0);
 }
