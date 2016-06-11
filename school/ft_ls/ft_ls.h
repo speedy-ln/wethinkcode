@@ -17,11 +17,18 @@ typedef	struct			s_list
 {
 	char				*file_name;
 	struct	s_list		*next;
-}						t_list;
+}					t_list;
 
-void	ft_ls(int i);
+typedef	struct			s_functions
+{
+
+	char				c;
+	t_list				*(*f)(char *str, int show_hidden);
+}				t_functions;
+
+t_list	*ft_ls(char *str, int show_hidden);
 void	add_element(t_list **list, char *value);
-void	ft_lsl(int a);
-
+t_list	*ft_lsl(char *str, int show_hidden);
+void	print_list(t_list *root);
 
 #endif
