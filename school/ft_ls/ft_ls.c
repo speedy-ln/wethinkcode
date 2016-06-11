@@ -50,6 +50,7 @@ void	add_element(t_list	**list, char *value)
 	}
 	add->next = *list;
 	*list = add;
+//	free(add);
 }
 
 t_list	*ft_lsl(char *str, int show_hidden)
@@ -93,28 +94,21 @@ int		main(int argc, char **argv)
 	i = 0;
 	if (argc > 1)
 	{
-		while (argv[1][i])
+		if (argv[1][0] == '-')
 		{
-			if (argv[1][i] == '-')
+			while (list->c && list->c != argv[1][1])
+				list++;
+			if (list->c)
 			{
-				while (list->c && list->c != argv[1][i + 1])
-					list++;
-				if (list->c)
-				{
-					if (list->c == 'a')
-						show_hidden = 1;
+				if (list->c == 'a')
+					show_hidden = 1;
 					root = list->f(".", show_hidden);
-				}
-				else
-					root = ft_ls(".", show_hidden);
 			}
 			else
-			{
-				root = list->f(argv[1], show_hidden);
-				break;
-			}
-			i++;
+				root = ft_ls(".", show_hidden);
 		}
+		else
+			root = list->f(argv[1], show_hidden);
 		print_list(root);
 	}
 	else
@@ -123,5 +117,7 @@ int		main(int argc, char **argv)
 		print_list(root);
 	}
 	printf("\n");
+//	free(list);
+//	free(root);
 	return (0);
 }
