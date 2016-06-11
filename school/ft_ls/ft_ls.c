@@ -1,7 +1,14 @@
 #include "includes/libft.h"
 #include "ft_ls.h"
+#include <unistd.h>
+#include <stdio.h>
 #include <dirent.h>
 #include <sys/stat.h>
+#include <sys/types.h>
+#include <pwd.h>
+#include <uuid/uuid.h>
+#include <grp.h>
+#include <time.h>
 
 t_list	*ft_ls(char *str, int show_hidden)
 {
@@ -60,45 +67,53 @@ void	add_element(t_list	**list, char *value)
 	*list = add;
 }
 
-t_list	*ft_lsl(char *str, int show_hidden)
+void	ft_lsl(char *str, int show_hidden)
 {
-	DIR		*dir;
-	struct	dirent	*dp;
 	t_list		*root;
 	struct	stat	buf;
-
+	struct	passwd	*pwd;
+	struct	group	*grp;
+	char		*tme;
 
 	root = ft_ls(str, show_hidden);
-	stat(str, &buf);
-	return (root);
-}
-
-static	t_functions	*init_list(void)
-{
-	t_functions	*list;
-
-	list = (t_functions *)malloc(sizeof(t_functions) * 6);
-	list[0].c = 'a';
-	list[0].f = &ft_ls;
-	list[1].c = 'l';
-	list[1].f = &ft_lsl;
-	list[2].c = 't';
-	list[2].f = &ft_ls;
-	list[3].c = 'r';
-	list[3].f = &ft_ls;
-	list[4].c = 'R';
-	list[4].f = &ft_ls;
-	return (list);
+	while (root != NULL)
+	{
+		stat(root->file_name, &buf);
+		printf((S_ISDIR(buf.st_mode)) ? "d" : "-");
+		printf((buf.st_mode & S_IRUSR) ? "r" : "-");
+		printf((buf.st_mode & S_IWUSR) ? "w" : "-");
+		printf((buf.st_mode & S_IXUSR) ? "x" : "-");
+		printf((buf.st_mode & S_IRGRP) ? "r" : "-");
+		printf((buf.st_mode & S_IWGRP) ? "w" : "-");
+		printf((buf.st_mode & S_IXGRP) ? "x" : "-");
+		printf((buf.st_mode & S_IROTH) ? "r" : "-");
+		printf((buf.st_mode & S_IWOTH) ? "w" : "-");
+		printf((buf.st_mode & S_IXOTH) ? "x  " : "-  ");
+		printf("%*d ", 3, buf.st_nlink);
+		pwd = getpwuid(buf.st_uid);
+		if (pwd == NULL)
+			printf("unknown  ");
+		else
+			printf("%s  ", pwd->pw_name);
+		grp = getgrgid(buf.st_gid);
+		if (pwd == NULL)
+			printf("unknown  ");
+		else
+			printf("%s  ", grp->gr_name);
+		printf("%*lld ", 4, buf.st_size);
+		tme = ctime(&buf.st_mtime);
+		printf("%.12s ", &(tme[4]));
+		printf("%s\n", root->file_name);
+		root = root->next;
+	}
 }
 
 int		main(int argc, char **argv)
 {
 	int	show_hidden;
 	int	i;
-	t_functions	*list;
 	t_list		*root;
 
-	list = init_list();
 	show_hidden = 0;
 	i = 0;
 	if (argc > 1)
@@ -110,11 +125,13 @@ int		main(int argc, char **argv)
 			root = ft_ls(".", show_hidden);
 			if (argv[1][1] == 'r')
 				ft_lsr(root);
+			else if (argv[1][1] == 'l')
+				ft_lsl(".", show_hidden);
 			else
 				print_list(root);
 		}
 		else
-			root = list->f(argv[1], show_hidden);
+			root = ft_ls(argv[1], show_hidden);
 	}
 	else
 	{
