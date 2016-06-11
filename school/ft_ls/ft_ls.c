@@ -26,6 +26,14 @@ t_list	*ft_ls(char *str, int show_hidden)
 	return (root);
 }
 
+void	ft_lsr(t_list *root)
+{
+	if (root == NULL)
+		return;
+	ft_lsr(root->next);
+	printf("%s\t", root->file_name);
+}
+
 void	print_list(t_list *root)
 {
 	while (root->next != 0)
@@ -50,17 +58,18 @@ void	add_element(t_list	**list, char *value)
 	}
 	add->next = *list;
 	*list = add;
-//	free(add);
 }
 
 t_list	*ft_lsl(char *str, int show_hidden)
 {
 	DIR		*dir;
 	struct	dirent	*dp;
-	struct	stat	file_info;
 	t_list		*root;
+	struct	stat	buf;
 
-	root = NULL;
+
+	root = ft_ls(str, show_hidden);
+	stat(str, &buf);
 	return (root);
 }
 
@@ -96,20 +105,16 @@ int		main(int argc, char **argv)
 	{
 		if (argv[1][0] == '-')
 		{
-			while (list->c && list->c != argv[1][1])
-				list++;
-			if (list->c)
-			{
-				if (list->c == 'a')
-					show_hidden = 1;
-					root = list->f(".", show_hidden);
-			}
+			if (argv[1][1] == 'a')
+				show_hidden = 1;
+			root = ft_ls(".", show_hidden);
+			if (argv[1][1] == 'r')
+				ft_lsr(root);
 			else
-				root = ft_ls(".", show_hidden);
+				print_list(root);
 		}
 		else
 			root = list->f(argv[1], show_hidden);
-		print_list(root);
 	}
 	else
 	{

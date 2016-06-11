@@ -27,6 +27,7 @@ typedef	struct			s_functions
 }				t_functions;
 
 t_list	*ft_ls(char *str, int show_hidden);
+void	ft_lsr(t_list *root);
 void	add_element(t_list **list, char *value);
 t_list	*ft_lsl(char *str, int show_hidden);
 void	print_list(t_list *root);
