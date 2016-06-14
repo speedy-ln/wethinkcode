@@ -108,6 +108,27 @@ void	ft_lsl(char *str, int show_hidden)
 	}
 }
 
+void	ft_ls_recursive(char *str, int show_hidden)
+{
+	t_list		*root;
+	struct	stat	buf;
+
+	root = ft_ls(str, show_hidden);
+	if (root == NULL)
+		return;
+	while (root != NULL)
+	{
+		stat(root->file_name, &buf);
+		printf("%s\t", root->file_name);
+		if (S_ISDIR(buf.st_mode))
+		{
+			ft_ls_recursive(root->file_name, &buf);
+		}
+		printf("", root->file_name);
+		root = root->next;
+	}
+}
+
 int		main(int argc, char **argv)
 {
 	int	show_hidden;
