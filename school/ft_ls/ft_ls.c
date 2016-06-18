@@ -45,10 +45,10 @@ void	print_list(t_list *root)
 {
 	while (root->next != 0)
 	{
-		printf("%s\t", root->file_name);
+		printf("%s\n", root->file_name);
 		root = root->next;
 	}
-	printf("%s\t", root->file_name);
+	printf("%s\n", root->file_name);
 }
 
 void	add_element(t_list	**list, char *value)
@@ -112,21 +112,31 @@ void	ft_ls_recursive(char *str, int show_hidden)
 {
 	t_list		*root;
 	struct	stat	buf;
+	char		*temp;
 
 	root = ft_ls(str, show_hidden);
-	if (root == NULL)
-		return;
+//	print_list(root);
+//	printf("\nDIR: %s\n\n", str);
 	while (root != NULL)
 	{
 		stat(root->file_name, &buf);
-		printf("%s\t", root->file_name);
+		printf("filename: %s\n", root->file_name);
 		if (S_ISDIR(buf.st_mode))
 		{
-			ft_ls_recursive(root->file_name, &buf);
+			temp = (char *)malloc((sizeof(char *) * (ft_strlen(str) + ft_strlen(root->file_name))) + 2);
+			temp = ft_strcpy(temp, str);
+			temp = ft_strcat(temp, "/");
+			temp = ft_strcat(temp, root->file_name);
+		//	printf("\n\ntemp: %s\n\n", root->file_name);
+		//	printf("\nnew string: %s\n\n", temp);
+//			printf("\n%s:\n", temp);
+			ft_ls_recursive(temp, show_hidden);
+			free(temp);
 		}
-		printf("", root->file_name);
+		//printf("", root->file_name);
 		root = root->next;
 	}
+	return ;
 }
 
 int		main(int argc, char **argv)
@@ -148,6 +158,8 @@ int		main(int argc, char **argv)
 				ft_lsr(root);
 			else if (argv[1][1] == 'l')
 				ft_lsl(".", show_hidden);
+			else if (argv[1][1] == 'R')
+				ft_ls_recursive(".", show_hidden);
 			else
 				print_list(root);
 		}
