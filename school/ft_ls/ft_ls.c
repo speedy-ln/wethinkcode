@@ -79,7 +79,21 @@ void	ft_lsl(char *str, int show_hidden)
 	while (root != NULL)
 	{
 		stat(root->file_name, &buf);
-		printf((S_ISDIR(buf.st_mode)) ? "d" : "-");
+		if (S_ISDIR(buf.st_mode))
+			printf("d");
+		else if (buf.st_mode == S_IFBLK)
+			printf("b");
+		else if (S_IFCHR == buf.st_mode)
+			printf("c");
+		else if (S_IFIFO == buf.st_mode)
+			printf("P");
+		else if (S_IFLNK == buf.st_mode)
+			printf("l");
+		else if (S_IFSOCK == buf.st_mode)
+			printf("s");
+		else
+			printf("-");
+	//	printf((S_ISDIR(buf.st_mode)) ? "d" : "-");
 		printf((buf.st_mode & S_IRUSR) ? "r" : "-");
 		printf((buf.st_mode & S_IWUSR) ? "w" : "-");
 		printf((buf.st_mode & S_IXUSR) ? "x" : "-");
@@ -100,7 +114,7 @@ void	ft_lsl(char *str, int show_hidden)
 			printf("unknown  ");
 		else
 			printf("%s  ", grp->gr_name);
-		printf("%*lld ", 4, buf.st_size);
+		printf("%*lld ", 6, buf.st_size);
 		tme = ctime(&buf.st_mtime);
 		printf("%.12s ", &(tme[4]));
 		printf("%s\n", root->file_name);
@@ -113,30 +127,28 @@ void	ft_ls_recursive(char *str, int show_hidden)
 	t_list		*root;
 	struct	stat	buf;
 	char		*temp;
+	char		*temp2;
 
 	root = ft_ls(str, show_hidden);
-//	print_list(root);
-//	printf("\nDIR: %s\n\n", str);
+	print_list(root);
 	while (root != NULL)
 	{
-		stat(root->file_name, &buf);
-		printf("filename: %s\n", root->file_name);
+		temp2 = (char *)malloc(2 + (sizeof(ft_strlen(str) + ft_strlen(root->file_name))));
+		temp2 = ft_strcpy(temp, str);
+		temp2 = ft_strcat(temp, "/");
+		temp2 = ft_strcat(temp, root->file_name);
+		stat(temp2, &buf);
 		if (S_ISDIR(buf.st_mode))
 		{
 			temp = (char *)malloc((sizeof(char *) * (ft_strlen(str) + ft_strlen(root->file_name))) + 2);
 			temp = ft_strcpy(temp, str);
 			temp = ft_strcat(temp, "/");
 			temp = ft_strcat(temp, root->file_name);
-		//	printf("\n\ntemp: %s\n\n", root->file_name);
-		//	printf("\nnew string: %s\n\n", temp);
-//			printf("\n%s:\n", temp);
+			printf("\n%s:\n", temp);
 			ft_ls_recursive(temp, show_hidden);
-			free(temp);
 		}
-		//printf("", root->file_name);
 		root = root->next;
 	}
-	return ;
 }
 
 int		main(int argc, char **argv)
@@ -171,7 +183,7 @@ int		main(int argc, char **argv)
 		root = ft_ls(".", 0);
 		print_list(root);
 	}
-	printf("\n");
+//	printf("\n");
 //	free(list);
 //	free(root);
 	return (0);
